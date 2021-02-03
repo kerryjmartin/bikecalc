@@ -1,3 +1,6 @@
+django
+gunicorn
+django_heroku
 Flask==1.1.2
 ptvsd==4.3.2 # Required for debugging.
 pandas==1.0.1
