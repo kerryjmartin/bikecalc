@@ -1,3 +1,6 @@
+import django
+import django_heroku
+import gunicorn
 import os
 import pandas as pandas
 import plotly.express as px
