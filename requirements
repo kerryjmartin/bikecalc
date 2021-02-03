@@ -1,0 +1,10 @@
+Flask==1.1.2
+ptvsd==4.3.2 # Required for debugging.
+pandas==1.0.1
+plotly==4.14.3
+numpy==1.18.1
+sympy
+dash==1.18.1
+dash-bootstrap-components
+mpmath==1.1.0
+dash_daq
