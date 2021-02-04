@@ -180,5 +180,3 @@ def callback_pred(weight, bike , acc , vo2max, threshold, economy, position, crr
 if __name__ == '__main__':
     app.run_server(debug=False)
 
-# something to do with setting up the server from the procfile??
-django_heroku.settings(locals())
