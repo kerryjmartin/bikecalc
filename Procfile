@@ -1,1 +1,1 @@
-web: gunicorn bikecalc.wsgi 
+web: gunicorn hello:app --preload
