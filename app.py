@@ -2,6 +2,7 @@ import django
 import django_heroku
 import gunicorn
 import os
+from flask import Flask
 import pandas as pandas
 import plotly.express as px
 import numpy as np
@@ -64,7 +65,7 @@ colors = {
     'text': '#BDB477'
 }
 
-app = dash.Dash(__name__)
+app = Flask(__name__)
 server = app.server
 app.layout = html.Div(children = [
                 html.Div(children = [
@@ -178,5 +179,6 @@ def callback_pred(weight, bike , acc , vo2max, threshold, economy, position, crr
     return 'Power: {} Watts'.format(pred[1]),'Speed: {} mph'.format(pred[0])
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
