@@ -15,6 +15,9 @@ import sympy
 import mpmath
 import dash_daq as daq
 
+# something to do with setting up the server from the procfile??
+django_heroku.settings(locals())
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=[external_stylesheets])
