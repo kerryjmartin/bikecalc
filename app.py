@@ -142,8 +142,6 @@ app.layout = html.Div(children = [
                         dcc.Input(id = 'temp', placeholder = 75, type = 'number', value = 75, style = {'textAlign': 'center'}),
                         html.H2(id = 'power', style = {'color': colors['text']}),
                         html.H2(id='speed', style = {'color': colors['text']}),
-                        html.Br(),
-                        html.Br()
                 ], style = {'columnCount': 2}, className = 'row')
             ], style = {'backgroundColor':'#090802'})]
             )
