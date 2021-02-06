@@ -7,8 +7,8 @@ import pandas as pandas
 import plotly.express as px
 import numpy as np
 import dash
-import dash_core_components as dcc 
-import dash_html_components as html 
+import dash_core_components as dcc
+import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import math
@@ -44,18 +44,18 @@ def calc(weight, bike , acc , vo2max, threshold, economy, position, crr, grade, 
     cda = position
     W = wind*1609.344/3600
     A1 = (W**3+Crvn**3)/27
-    A2 = W*(5*W*Crvn+(8+Crvn**2)/(cda*rho)+6*Frg)/(9*cda*rho)                
+    A2 = W*(5*W*Crvn+(8+Crvn**2)/(cda*rho)+6*Frg)/(9*cda*rho)
     A3 = (2*Frg*Crvn)/(3*((cda*rho)**2))
     A4 = watts/(Cm*cda*rho)
     A = A1 - A2 + A3 + A4
     X = (((2)/(9*cda*rho))*((3*Frg)-(4*W*Crvn)-((W**2)*cda*(rho/2))-((2*Crvn)/(cda*rho))))
     C = A**2 + X**3
-    if C >= 0: 
+    if C >= 0:
         V1 = (A+(A**2+X**3)**(1/2))**(1/3)
         V2 = np.cbrt(A-(((A**2)+(X**3))**(1.0/2.0)))
         V3 = (2/3)*(W+((Crvn)/(cda*rho)))
         V = V1+V2-V3
-    else : 
+    else :
         V = (2*(-X)**(1/2))*math.cos((1/3)*math.acos((A)/(((-X)**3)**1/2)))-(2/3)*((W)+((Crvn)/(cda*rho)))
     speed = round(V*3600/1609.344, 2)
     return speed, watts
@@ -67,7 +67,6 @@ colors = {
 
 app = dash.Dash(__name__)
 server = app.server
-
 app.layout = html.Div(children = [
                 html.Div(children = [
                     html.Div(children = [
@@ -89,22 +88,25 @@ app.layout = html.Div(children = [
                                                 50: {'label': 'Fit', 'style': {'color':'#bdb477'}},
                                                 70: {'label': 'Elite', 'style': {'color':'#bdb477'}},
                                                 90: {'label': 'Olympian', 'style': {'color': '#bdb477'}}
-                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "ml/kg/min",'color':'#bdb477'}),
+                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "ml/kg/min",'color':'#bdb477'},
+                                                size = 200),
                         html.Br(),
                         html.H5('Threshold (%)', style = {'color': colors['text']}),
                         daq.Slider(id = 'threshold', min = 50, max = 100, step = 1, value = 75, marks={
                                                 65: {'label': 'Low', 'style': {'color': '#bdb477'}},
                                                 75: {'label': 'Mod', 'style': {'color':'#bdb477'}},
                                                 85: {'label': 'High', 'style': {'color':'#bdb477'}},
-                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "Percent",'color':'#bdb477'}),
+                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "Percent",'color':'#bdb477'},
+                                                size = 200),
                         html.Br(),
                         html.H5('Cycling Economy (kj/L)', style = {'color': colors['text']}),
                         daq.Slider(id = 'economy', min = 3, max = 6, step = 0.1, value = 4.8, marks={
                                                 3.5: {'label': 'Untrained', 'style': {'color': '#bdb477'}},
                                                 4.5: {'label': 'Trained', 'style': {'color':'#bdb477'}},
                                                 5.5: {'label': 'Exceptional', 'style': {'color':'#bdb477'}},
-                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "kJ/L",'color':'#bdb477'}
-                                    ),                                                
+                                                },updatemode='drag',handleLabel={"showCurrentValue": True,"label": "kJ/L",'color':'#bdb477'},
+                                                size = 200
+                                    ),
                         html.Br(),
                         html.Br(),
                         html.Br(),
@@ -120,7 +122,7 @@ app.layout = html.Div(children = [
                             {'label':'Hoods', 'value':0.3}
                             ],
                             value = .2,
-                            style = {'textAlign': 'center','width': '50%'}),
+                            style = {'textAlign': 'center','width': 200}),
                         html.H5('Tires', style = {'color': colors['text']}),
                         dcc.Dropdown(id = 'crr', options = [
                             {'label':'Tubular', 'value':.002},
@@ -129,7 +131,7 @@ app.layout = html.Div(children = [
                             {'label':'Clincher - Low RR', 'value':.003},
                             {'label':'Clincher - Regular', 'value':.0034}
                             ],
-                            value = .002, style = {'textAlign': 'center', 'width': '50%'}),
+                            value = .002, style = {'textAlign': 'center', 'width': 200}),
                         html.H5('Grade (%)', style = {'color': colors['text']}),
                         dcc.Input(id = 'grade', placeholder = 0, type = 'number', value = 0, style = {'textAlign': 'center'}),
                         html.H5('Wind (mph)', style = {'color': colors['text']}),
@@ -141,7 +143,7 @@ app.layout = html.Div(children = [
                         html.H2(id = 'power', style = {'color': colors['text']}),
                         html.H2(id='speed', style = {'color': colors['text']}),
                         html.Br(),
-                        html.Br()  
+                        html.Br()
                 ], style = {'columnCount': 2}, className = 'row')
             ], style = {'backgroundColor':'#090802'})]
             )
@@ -166,19 +168,18 @@ app.layout = html.Div(children = [
 
 def callback_pred(weight, bike , acc , vo2max, threshold, economy, position, crr, grade, wind, alt, temp):
     pred = calc(weight = weight,
-                bike = bike, 
-                acc = acc, 
-                vo2max = vo2max, 
-                threshold = threshold, 
-                economy = economy, 
-                position = position, 
-                crr = crr, 
-                grade = grade, 
-                wind = wind, 
-                alt = alt, 
+                bike = bike,
+                acc = acc,
+                vo2max = vo2max,
+                threshold = threshold,
+                economy = economy,
+                position = position,
+                crr = crr,
+                grade = grade,
+                wind = wind,
+                alt = alt,
                 temp = temp)
     return 'Power: {} Watts'.format(pred[1]),'Speed: {} mph'.format(pred[0])
-
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
